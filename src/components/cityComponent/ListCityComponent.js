@@ -2,9 +2,17 @@ import React from 'react'
 import CityService from '../../services/CityService'
 
 export default function ListCityComponent(props) {
+    const [cities, setCities] = useState([])
+
+    useEffect(() => {
+        CityService.getCities().then(res => {
+            setCities(res.data)
+        })
+    })
+
     function deleteCity(e, id) {
         CityService.deleteCity(id).then(res => {
-            setCities({cities: cities.filter(c => c.id != id)})
+            setCities(cities.filter(c => c.id != id))
         })
     }
     
@@ -15,18 +23,6 @@ export default function ListCityComponent(props) {
     function addCity(e){
         props.history.push(`/city-add/_add`)
     }
-
-    const [cities, setCities] = useState([{}])
-
-    useEffect(() => {
-        CityService.getCities().then(res => {
-            setCities(res.data)
-        })
-        /* return () => {
-            cleanup
-        } */
-    }/* , [input] */)
-
 
     return (
             <div>
