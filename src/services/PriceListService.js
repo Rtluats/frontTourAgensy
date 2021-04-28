@@ -17,6 +17,10 @@ class PriceListService{
         return axios.get(PRICE_LIST_API_BASE_URL + "/" + id, { headers: authHeader() });
     }
 
+    getPriceListByCityName(name){
+        return axios.get(PRICE_LIST_API_BASE_URL + "/" + name, { headers: authHeader() });
+    }
+
     updatePriceList(priceList, id){
         return axios.put(PRICE_LIST_API_BASE_URL + "/" + id, priceList, { headers: authHeader() });
     }

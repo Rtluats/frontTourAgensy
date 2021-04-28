@@ -1,4 +1,7 @@
+import { Button } from 'bootstrap';
 import React, { Component } from 'react';
+import DecimalField from 'react-decimal-field';
+import PriceListService from '../../services/PriceListService';
 import TourService from '../../services/TourSevice';
 
 
@@ -11,6 +14,8 @@ class CreateTourComponent extends Component {
             id: this.props.match.params.id,
             title: '',
             description: '',
+            priceLists: [],
+            allPriceLists: [],
         }
 
         this.saveOrUpdateTour = this.saveOrUpdateTour.bind(this);
@@ -26,10 +31,24 @@ class CreateTourComponent extends Component {
                 this.setState({
                     id: tour.id,
                     title: tour.title,
-                    description: tour.description
+                    description: tour.description,
+                    priceLists: tour.priceLists,
                 })
             })
-        }   
+        }
+        if(this.state.id == '_add'){
+            PriceListService.getPriceLists().then((res) => {
+                this.setState({
+                    allPriceLists: res.data
+                })
+            })
+        }else{
+            PriceListService.getPriceListByCityName(this.state.priceLists[0].country.countryName).then((res) => {
+                this.setState({
+                    allPriceLists: res.data
+                })
+            })
+        }
     }
 
     saveOrUpdateTour = (p) => {
@@ -71,6 +90,14 @@ class CreateTourComponent extends Component {
         }
     }
 
+    addPriceList(){
+
+    }
+
+    deletePriceList(){
+        
+    }
+
     render() {
         return (
             <div>
@@ -89,6 +116,39 @@ class CreateTourComponent extends Component {
                                         <label>Description:</label>
                                         <input placeholder="Description" name="description" className="form-control"
                                             value={this.state.description} onChange={this.changeDescriptionHandler}/>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>PriceLists:</label>
+                                        <table className="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Hotel</th>
+                                                    <th>City</th>
+                                                    <th>Departure date</th>
+                                                    <th>Number of days</th>
+                                                    <th>Price</th>
+                                                    <th>Description</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {
+                                                this.state.priceLists.map(
+                                                    p => 
+                                                    <tr key={p.Id} >
+                                                        <td>{p.hotel.name}</td>
+                                                        <td>{p.hotel.city.name}</td>
+                                                        <td>{p.departureDate}</td>
+                                                        <td>{p.numberOfDays}</td>
+                                                        <td>{p.price}</td>
+                                                        <td>{p.description}</td>
+                                                        <Button className="btn-success">Add to tour</Button>
+                                                        <Button className="btn-danger">Delete from tour</Button>
+                                                    </tr>
+                                                )
+                                            }
+                                            </tbody>
+                                        </table>
                                     </div>
                                     <button className="btn btn-success" onClick={this.saveOrUpdateTour}>Save</button>
                                     <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Cancel</button>
