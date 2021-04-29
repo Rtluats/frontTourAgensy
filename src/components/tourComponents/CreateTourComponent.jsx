@@ -1,6 +1,5 @@
 import { Button } from 'bootstrap';
 import React, { Component } from 'react';
-import DecimalField from 'react-decimal-field';
 import PriceListService from '../../services/PriceListService';
 import TourService from '../../services/TourSevice';
 
@@ -36,19 +35,12 @@ class CreateTourComponent extends Component {
                 })
             })
         }
-        if(this.state.id == '_add'){
-            PriceListService.getPriceLists().then((res) => {
-                this.setState({
-                    allPriceLists: res.data
-                })
+
+        PriceListService.getPriceLists().then((res) => {
+            this.setState({
+                allPriceLists: res.data
             })
-        }else{
-            PriceListService.getPriceListByCityName(this.state.priceLists[0].country.countryName).then((res) => {
-                this.setState({
-                    allPriceLists: res.data
-                })
-            })
-        }
+        })
     }
 
     saveOrUpdateTour = (p) => {
@@ -90,12 +82,18 @@ class CreateTourComponent extends Component {
         }
     }
 
-    addPriceList(){
-
+    addPriceList = (e, priceList) => {
+        e.preventDefault();
+        if(!this.state.priceLists.includes(priceList)){
+            this.state.priceLists.add(priceList)
+        }
     }
 
-    deletePriceList(){
-        
+    deletePriceList = (e, priceList) =>{
+        e.preventDefault();
+        if(this.state.priceLists.includes(priceList)){
+            this.state.priceLists = this.state.priceLists.filter(p => p.id != priceList.id)
+        }
     }
 
     render() {
