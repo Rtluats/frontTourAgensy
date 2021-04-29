@@ -20,6 +20,8 @@ class CreateTourComponent extends Component {
         this.saveOrUpdateTour = this.saveOrUpdateTour.bind(this);
         this.changeTitleHandler = this.changeTitleHandler.bind(this);
         this.changeDescriptionHandler = this.changeDescriptionHandler.bind(this);
+        this.addPriceList = this.addPriceList.bind(this);
+        this.deletePriceList = this.deletePriceList.bind(this);
     }
 
     componentDidMount(){
@@ -82,15 +84,13 @@ class CreateTourComponent extends Component {
         }
     }
 
-    addPriceList = (e, priceList) => {
-        e.preventDefault();
+    addPriceList(priceList){
         if(!this.state.priceLists.includes(priceList)){
             this.state.priceLists.add(priceList)
         }
     }
 
-    deletePriceList = (e, priceList) =>{
-        e.preventDefault();
+    deletePriceList(priceList){
         if(this.state.priceLists.includes(priceList)){
             this.state.priceLists = this.state.priceLists.filter(p => p.id != priceList.id)
         }
@@ -140,8 +140,8 @@ class CreateTourComponent extends Component {
                                                         <td>{p.numberOfDays}</td>
                                                         <td>{p.price}</td>
                                                         <td>{p.description}</td>
-                                                        <Button className="btn-success">Add to tour</Button>
-                                                        <Button className="btn-danger">Delete from tour</Button>
+                                                        <Button className="btn-success" onClick={() => this.addPriceList(p)}>Add to tour</Button>
+                                                        <Button className="btn-danger" onClick={() => this.deletePriceList(p)}>Delete from tour</Button>
                                                     </tr>
                                                 )
                                             }
