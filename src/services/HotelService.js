@@ -17,6 +17,10 @@ class HotelService{
         return axios.get(HOTEL_API_BASE_URL + "/" + id, { headers: authHeader() });
     }
 
+    getHotelByCity(name){
+        return axios.get(HOTEL_API_BASE_URL + "/" + name, { headers: authHeader() });
+    }
+
     updateHotel(hotel, id){
         return axios.put(HOTEL_API_BASE_URL + "/" + id, hotel, { headers: authHeader() });
     }

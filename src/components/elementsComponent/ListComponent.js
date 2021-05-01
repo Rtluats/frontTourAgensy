@@ -6,7 +6,7 @@ export default function ListComponent(props) {
 
 
     useEffect(() => {
-        TourService.getTours().then((res)=>
+        TourService.getToursByTitle(props.match.params.title).then((res)=>
             {
                 setTours(res.data);
             }
@@ -15,12 +15,15 @@ export default function ListComponent(props) {
     
     return (
         <div>
+            <label>Resalts of Search: "{props.match.params.title}"</label>
             {
                 tours.map(
                     tour =>
                     <div key={tour.id} className="card">
                         <h5 className="card-title">{tour.title}</h5>
                         <div className="card-body">
+                            <label>Country: {tour.priceLists[0].hotel.city.country.name}</label>
+                            <label>City: {tour.priceLists[0].hotel.city.name}</label>
                             <p className="card-text">{tour.discription}</p>
                             <a onClick={() => {props.history.push(`/tour-detail-view/${tour.id}`)}} className="card-link">Подробнее</a>
                         </div>

@@ -1,5 +1,7 @@
+import { Button } from 'bootstrap';
 import React, { Component } from 'react';
 import DecimalField from 'react-decimal-field';
+import HotelService from '../../services/HotelService';
 import PriceListService from '../../services/PriceListService';
 
 
@@ -15,6 +17,7 @@ class CreatePriceListComponent extends Component {
             departureDate: null,
             numberOfDays: 0,
             hotel: {},
+            allHotels:[],
             tour: {},
         }
 
@@ -23,7 +26,8 @@ class CreatePriceListComponent extends Component {
         this.changeDepartureDateHandler = this.changeDepartureDateHandler.bind(this);
         this.changeDiscountHandler = this.changeDiscountHandler.bind(this);
         this.changeNumberOfDaysHandler = this.changeNumberOfDaysHandler.bind(this);
-
+        this.deleteHotel = this.deleteHotel.bind(this)
+        this.addHotel = this.addHotel.bind(this)
     }
 
     componentDidMount(){
@@ -40,7 +44,13 @@ class CreatePriceListComponent extends Component {
                     tour: priceList.tour,
                 })
             })
-        }   
+        }
+        
+        HotelService.getHotels().then(res => {
+            this.setState({
+                hotels: res.data
+            })
+        })
     }
 
     saveOrUpdatePriceList = (p) => {
@@ -48,7 +58,7 @@ class CreatePriceListComponent extends Component {
         let priceList = {
             price: this.state.price,
             discount: this.state.discount,
-            departureDate: this.state.departureDate + " 00:00:00",
+            departureDate: this.state.departureDate,
             hotel: this.state.hotel,
             tour: this.state.tour
         };
@@ -92,6 +102,16 @@ class CreatePriceListComponent extends Component {
         }
     }
 
+    deleteHotel(){
+        if(this.state.hotel != null){
+            this.state.hotel = null
+        }
+    }
+
+    addHotel(h){
+        this.state.hotel = h 
+    }
+
     render() {
         return (
             <div>
@@ -121,6 +141,32 @@ class CreatePriceListComponent extends Component {
                                         <input type="number" placeholder="numberOfDays" name="numberOfDays" className="form-control"
                                             value={this.state.numberOfDays} onChange={this.changeNumberOfDaysHandler}/>
                                     </div>
+                                    <div>Hotel List</div>
+                                    <table>
+                                        <thead>
+                                            <th>Hotel</th>
+                                            <th>City</th>
+                                            <th>Country</th>
+                                            <th>Actions</th>
+                                        </thead>
+                                        <tbody>
+                                        {
+                                            this.state.hotels.map(
+                                                h =>
+                                                <tr key={h.id}>
+                                                    <td>{h.name}</td>
+                                                    <td>{h.city.name}</td>
+                                                    <td>{h.country.name}</td>
+                                                    <td>
+                                                        <Button className="btn btn-success" onClick={() => this.addHotel(h)}>Add to PriceList</Button>
+                                                        <Button className="btn btn-danger" onClick={() => this.deleteHotel(h)}>Delete from PriceList</Button>
+                                                    </td>
+                                                    
+                                                </tr>
+                                            )
+                                        }
+                                        </tbody>
+                                    </table>
                                     <button className="btn btn-success" onClick={this.saveOrUpdatePriceList}>Save</button>
                                     <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Cancel</button>
                                 </form>

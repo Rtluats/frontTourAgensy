@@ -67,7 +67,6 @@ class ListToursComponent extends Component {
                                         <td>
                                             <button onClick = {() => this.editTour(tour.id)} className="btn btn-info">Update</button>
                                             <button style={{marginLeft: "10px"}} onClick = {() => this.deleteTour(tour.id)} className="btn btn-danger">Delete</button>
-                                            <button style={{marginLeft: "10px"}} onClick = {() => this.viewTour(tour.id)} className="btn btn-info">View</button>
                                         </td>
                                     </tr>
                                 )

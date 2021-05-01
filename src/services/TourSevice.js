@@ -17,6 +17,10 @@ class TourService{
         return axios.get(TOUR_API_BASE_URL + "/" + id, { headers: authHeader() });
     }
 
+    getToursByTitle(title){
+        return axios.get(TOUR_API_BASE_URL + "/" + title, { headers: authHeader() });
+    }
+
     updateTour(tour, id){
         return axios.put(TOUR_API_BASE_URL + "/" + id, tour, { headers: authHeader() });
     }

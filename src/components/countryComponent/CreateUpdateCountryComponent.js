@@ -1,9 +1,14 @@
 import React from 'react'
 import CountryService from '../../services/CountryService'
+import CityService from '../../services/CityService'
+import { Button } from 'bootstrap'
+
 
 export default function CreateUpdateCountryComponent(props) {
     const [name, setName] = useState('')
+    const [cities, setCities] = useState([])
     const [id, setId] = useState('')
+    const [allCities, setAllCities] = useState([])
 
     useEffect(() => {
         setId(props.match.params.id)
@@ -11,15 +16,21 @@ export default function CreateUpdateCountryComponent(props) {
             CountryService.getCountryById(id).then(res => {
                 let country = res.data
                 setName(country.name)
+                setCities(country.cities)
             })
         }   
+
+        CityService.getCities().then(res => {
+            setAllCities(res.data)
+        })
     })
 
     function saveOrUpdateCountry(c){
         c.preventDefault()
 
         let country = {
-            name: name
+            name: name,
+            cities: cities
         }
 
         if(id !== '_add'){
@@ -50,6 +61,18 @@ export default function CreateUpdateCountryComponent(props) {
         props.history.goBack()
     }
 
+    function addCity(c){
+        if(!cities.contains(c)){
+            cities.add(c);
+        }
+    }
+
+    function deleteCity(){
+        if(cities.contains(c)){
+            cities.remove(c);
+        }
+    }
+
     return (
         <div>
             <div className="container">
@@ -63,7 +86,29 @@ export default function CreateUpdateCountryComponent(props) {
                                     <input placeholder="Name" name="name" className="form-control"
                                         value={name} onChange={changeNameHandler}/>
                                 </div>
-                                    
+                                <label>Cities List</label>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            allCities.map(
+                                                c=>
+                                                <tr>
+                                                    <td>{c.name}</td>
+                                                    <td>
+                                                        <Button className="btn btn-success" onClick={() => addCity(c)}>Add</Button>
+                                                        <Button className="btn btn-danger" onClick={() => deleteCity}>Delete</Button>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        }
+                                    </tbody>
+                                </table>
                                 <button className="btn btn-success" onClick={saveOrUpdateCountry}>Save</button>
                                 <button className="btn btn-danger" onClick={cancel} style={{marginLeft: "10px"}}>Cancel</button>
                             </form>

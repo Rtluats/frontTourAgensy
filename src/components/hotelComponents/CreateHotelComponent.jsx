@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import HotelService from '../../services/HotelService';
+import CityService from '../../service/CityService';
+import { Button } from 'bootstrap';
 
 class CreateHotelComponent extends Component {
     
@@ -9,9 +11,13 @@ class CreateHotelComponent extends Component {
         this.state = {
             id: this.props.match.params.id,
             name: '',
+            city: null,
+            cities: [],
         }
         this.changeNameHandler = this.changeNameHandler.bind(this);
         this.saveOrUpdateHotel = this.saveOrUpdateHotel.bind(this);
+        this.addCity = this.addCity.bind(this);
+        this.deleteCity = this.deleteCity.bind(this);
     }
 
     componentDidMount(){
@@ -20,10 +26,17 @@ class CreateHotelComponent extends Component {
                 let hotel = res.data;
                 this.setState({
                     id: hotel.id,
-                    name: hotel.name
+                    name: hotel.name,
+                    city: hotel.city,
                 })
             });
-        }   
+        }
+
+        CityService.getCities().then((res) => {
+            this.setState({
+                cities: res.data
+            })
+        })
     }
 
     saveOrUpdateHotel = (h) => {
@@ -61,6 +74,18 @@ class CreateHotelComponent extends Component {
         }
     }
 
+    addCity(c){
+        this.setState({
+            city: c
+        })
+    }
+
+    deleteCity(){
+        this.setState({
+            city: null
+        })
+    }
+
     render() {
         return (
             <div>
@@ -75,6 +100,32 @@ class CreateHotelComponent extends Component {
                                         <input placeholder="Name" name="name" className="form-control"
                                             value={this.state.name} onChange={this.changeNameHandler}/>
                                     </div>
+
+                                    <label>Cities List</label>
+
+                                    <table>
+                                        <thead>
+                                            <th>Country</th>
+                                            <th>City</th>
+                                            <th>Actions</th>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                this.state.cities.map(
+                                                    c => 
+                                                    <tr>
+                                                        <td>{c.country.name}</td>
+                                                        <td>{c.name}</td>
+                                                        <td>
+                                                            <Button className="btn btn-success" onClick={() => this.addCity(c)}>Add</Button>
+                                                            <Button className="btn btn-danger" onClick={() => this.deleteCity}>Delete</Button>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            }
+                                        </tbody>
+                                    </table>
+
                                     <button className="btn btn-success" onClick={this.saveOrUpdateHotel}>Save</button>
                                     <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Cancel</button>
                                 </form>

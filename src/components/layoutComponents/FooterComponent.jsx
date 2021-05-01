@@ -13,7 +13,7 @@ class FooterComponent extends Component {
 
 
     render() {
-        return (
+        return ( // чёрт знает что тут написать , а то вылазит на пол экрана 
             <div>
                 
             </div>

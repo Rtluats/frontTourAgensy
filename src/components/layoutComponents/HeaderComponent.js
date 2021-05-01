@@ -10,6 +10,7 @@ export default class HeaderComponent extends Component {
         this.state = {
             showManagerBoard: false,
             currentUser: undefined,
+            title: '',
         }
 
         this.logOut = this.logOut.bind(this);
@@ -30,6 +31,17 @@ export default class HeaderComponent extends Component {
         AuthService.logout();
     }
 
+    searchHandler(e){
+        this.setState({
+            title: e.target.value,
+        })
+        e.preventDefault();
+    }
+
+    findByTitle(){
+        this.props.history.push(`/search/${this.state.title}`)
+    }
+
 
     render() {
         const { currentUser, showManagerBoard} = this.state;
@@ -41,7 +53,7 @@ export default class HeaderComponent extends Component {
                             <div><label className="navbar-brand">Tour Agensy</label></div>
                             <form className="form-inline my-2 my-lg-0">
                                 <input className="form-control mr-sm-2" type="search" placeholder="tour" aria-label="Search"/>
-                                <button onClick={() => {}} className="btn btn-outline-success my-2 my-sm-0" type="submit">Search by tour</button>
+                                <button onClick={() => this.searchHandler} onChange={() => this.findByTitle} className="btn btn-outline-success my-2 my-sm-0" type="submit">Search by tour</button>
                             </form>
                             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             {currentUser && (

@@ -17,11 +17,11 @@ export default function ListCityComponent(props) {
     }
     
     function editCity(e, id) {
-        props.history.push(`/city-add/${id}`)
+        props.history.push(`/cities-add/${id}`)
     }
 
     function addCity(e){
-        props.history.push(`/city-add/_add`)
+        props.history.push(`/cities-add/_add`)
     }
 
     return (

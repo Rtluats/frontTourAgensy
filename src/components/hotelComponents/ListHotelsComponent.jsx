@@ -66,9 +66,7 @@ class ListHotelsComponent extends Component {
                                         <td> {hotel.name} </td>
                                         <td>
                                             <button onClick = {() => this.editHotel(hotel.id)} className="btn btn-info">Update</button>
-                                            <button style={{marginLeft: "10px"}} onClick = {() => this.deleteHotel(hotel.id)} className="btn btn-danger">Delete</button>
-                                            <button style={{marginLeft: "10px"}} onClick = {() => this.viewHotel(hotel.id)} className="btn btn-info">View</button>
-                                        </td>
+                                            <button style={{marginLeft: "10px"}} onClick = {() => this.deleteHotel(hotel.id)} className="btn btn-danger">Delete</button>                                        </td>
                                     </tr>
                                 )
                             }

@@ -11,11 +11,11 @@ export default function ListCountry(props) {
     })
     
     function editCountry(e, id){
-        props.history.push(`/country-add/${id}`)
+        props.history.push(`/countries-add/${id}`)
     }
 
     function addCountry(e){
-        props.history.push(`/country-add/_add`)
+        props.history.push(`/countries-add/_add`)
     }
 
     function deleteCountry(e, id){

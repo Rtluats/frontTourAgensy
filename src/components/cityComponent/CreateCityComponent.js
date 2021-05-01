@@ -3,7 +3,6 @@ import CityService from '../../services/CityService'
 
 export default function CreateCityComponent(props) {
     const [name, setName] = useState('')
-    const [countryName, setCountryName] = useState('')
     const [id, setId] = useState('')
 
     useEffect(() => {
@@ -11,7 +10,6 @@ export default function CreateCityComponent(props) {
         if(id !== '_add' ){
             CityService.getCityById(id).then(res => {
                 let city = res.data
-                setCountryName(city.countryName)
                 setName(city.name)
             })
         };
@@ -22,7 +20,6 @@ export default function CreateCityComponent(props) {
 
         let saveCity = {
             name:name,
-            countryName: countryName,
         }
 
         if (id !== '_add'){
@@ -39,11 +36,6 @@ export default function CreateCityComponent(props) {
     function changeNameHandler(e){
         e.preventDefault()
         setName(e.target.value)
-    }
-
-    function changeCountryNameHandler(e){
-        e.preventDefault()
-        setCountryName(e.target.value)
     }
     
     function getTitle(){
@@ -72,12 +64,6 @@ export default function CreateCityComponent(props) {
                                         value={name} onChange={changeNameHandler}/>
                                 </div>
                                     
-                                <div className="form-group">
-                                    <label>Country Name:</label>
-                                    <input placeholder="Country name" name="countryName" className="form-control"
-                                        value={countryName} onChange={changeCountryNameHandler}/>
-                                </div>
-
                                 <button className="btn btn-success" onClick={saveOrUpdateCity}>Save</button>
                                 <button className="btn btn-danger" onClick={cancel} style={{marginLeft: "10px"}}>Cancel</button>
                             </form>
