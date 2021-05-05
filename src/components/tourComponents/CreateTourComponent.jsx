@@ -87,52 +87,52 @@ class CreateTourComponent extends Component {
 
     addPriceList(priceList){
         if(!this.state.priceLists.includes(priceList)){
-            this.state.priceLists.add(priceList)
+            this.setState({priceLists: this.state.priceLists.add(priceList)})
         }
     }
 
     deletePriceList(priceList){
         if(this.state.priceLists.includes(priceList)){
-            this.state.priceLists = this.state.priceLists.filter(p => p.id != priceList.id)
+            this.setState({priceLists: this.state.priceLists.filter(p => p.id !== priceList.id)})
         }
     }
 
     getButton(p){
-        if(this.state.priceLists.contains(p)){
+        if(this.state.priceLists.includes(p)){
             return <Button className="btn-danger" onClick={() => this.deletePriceList(p)}>Delete from tour</Button>
         } else {
             return <Button className="btn-success" onClick={() => this.addPriceList(p)}>Add to tour</Button>
         }
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-      }
+    // handleSubmit(e) {
+    //     e.preventDefault();
+    //   }
     
-    handleImageChange(e) {
-        e.preventDefault();
+    // handleImageChange(e) {
+    //     e.preventDefault();
     
-        let reader = new FileReader();
-        let file = e.target.files[0];
+    //     let reader = new FileReader();
+    //     let file = e.target.files[0];
     
-        reader.onloadend = () => {
-          this.setState({
-            file: file,
-            imagePreviewUrl: reader.result
-          });
-        }
+    //     reader.onloadend = () => {
+    //       this.setState({
+    //         file: file,
+    //         imagePreviewUrl: reader.result
+    //       });
+    //     }
     
-        reader.readAsDataURL(file)
-    }
+    //     reader.readAsDataURL(file)
+    // }
 
     render() {
-        let {imagePreviewUrl} = this.state;
-        let $imagePreview = null;
-        if (imagePreviewUrl) {
-            $imagePreview = (<img src={imagePreviewUrl} />);
-        } else {
-            $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
-        }
+        // let {imagePreviewUrl} = this.state;
+        // let $imagePreview = null;
+        // if (imagePreviewUrl) {
+        //     $imagePreview = (<img src={imagePreviewUrl} />);
+        // } else {
+        //     $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
+        // }
 
         return (
             <div>
@@ -152,7 +152,7 @@ class CreateTourComponent extends Component {
                                         <input placeholder="Description" name="description" className="form-control"
                                             value={this.state.description} onChange={this.changeDescriptionHandler}/>
                                     </div>
-                                    <div>
+                                    {/* <div>
                                         <label>Image:</label>
                                         <div className="previewComponent">
                                             <form onSubmit={(e)=>this._handleSubmit(e)}>
@@ -166,7 +166,7 @@ class CreateTourComponent extends Component {
                                                 {$imagePreview}
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="form-group">
                                         <label>PriceLists:</label>
                                         <table className="table table-striped table-bordered">
@@ -194,7 +194,7 @@ class CreateTourComponent extends Component {
                                                         <td>{p.description}</td>
                                                         <td>
                                                             <div className="btn-group">
-                                                                {getButton(p)}
+                                                                {this.getButton(p)}
                                                             </div>
                                                         </td>
                                                     </tr>

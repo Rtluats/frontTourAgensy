@@ -1,4 +1,4 @@
-import React from 'react'
+import {React, useState, useEffect} from 'react'
 import CityService from '../../services/CityService'
 
 export default function ListCityComponent(props) {
@@ -12,7 +12,7 @@ export default function ListCityComponent(props) {
 
     function deleteCity(e, id) {
         CityService.deleteCity(id).then(res => {
-            setCities(cities.filter(c => c.id != id))
+            setCities(cities.filter(c => c.id !== id))
         })
     }
     
@@ -27,7 +27,7 @@ export default function ListCityComponent(props) {
     return (
             <div>
                 <h2 className="text-center">Cities List</h2>
-                <button type="button" className="btn btn-primary " onClick={() => addCity}>Add</button>
+                <button type="button" className="btn btn-primary " onClick={(e) => addCity(e)}>Add</button>
                 <p/>
                 <div className="row">
                     <table className="table table-striped table-bordered">
@@ -44,7 +44,7 @@ export default function ListCityComponent(props) {
                                     city =>
                                     <tr key = {city.id}>
                                         <td> {city.name} </td>
-                                        <td> {city.country.name} </td>
+                                        <td> {city.country == null ? "Not" :city.country.name} </td>
                                         <td>
                                             <div className="btn-group">
                                                 <button onClick = {() => editCity(city.id)} className="btn btn-info">Update</button>

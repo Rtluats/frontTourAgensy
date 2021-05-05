@@ -1,12 +1,11 @@
-import React from 'react'
+import {React, useState, useEffect} from 'react'
 import CityService from '../../services/CityService'
 
 export default function CreateCityComponent(props) {
     const [name, setName] = useState('')
-    const [id, setId] = useState('')
+    const [id] = useState(props.match.params.id)
 
     useEffect(() => {
-        setId(props.match.params.id)
         if(id !== '_add' ){
             CityService.getCityById(id).then(res => {
                 let city = res.data
@@ -22,7 +21,7 @@ export default function CreateCityComponent(props) {
             name:name,
         }
 
-        if (id !== '_add'){
+        if (id === '_add'){
             CityService.createCities(saveCity).then(res => {
                 props.history.push('/cities')
             })
@@ -46,7 +45,7 @@ export default function CreateCityComponent(props) {
         }
     }
 
-    cancel = () => {
+    function cancel(){
         props.history.goBack()
     }
 

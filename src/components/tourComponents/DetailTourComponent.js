@@ -1,5 +1,5 @@
 import { Button } from 'bootstrap';
-import React from 'react'
+import {React, useState, useEffect} from 'react'
 import authService from '../../services/auth.service'
 import CommentService from '../../services/CommentService';
 import TourSevice from '../../services/TourSevice';
@@ -7,23 +7,18 @@ import TourSevice from '../../services/TourSevice';
 // класс для просмотра конкретного тура + отеля + дней отдыха
 export default function DetailTourComponent(props) {
     const [tour, setTour] = useState({});
-    const [isUser, setIsUser] = useState(false);
+    const [isUser] = useState(authService.getCurrentUser() == null ? false : true);
     const [priceList, setPriceList] = useState({})
     const [comments, setComments] = useState([])
     const [comment, setComment] = useState('')
 
     useEffect(() => {
-        const user = authService.getCurrentUser();
         const tourId = props.match.params.tourId;
         const priceListId =  props.match.params.priceListId;
 
-        if(user){
-            setIsUser(true);
-        }
-
         TourSevice.getTourById(tourId).then(res =>{
             setTour(res.data);
-            setPriceList(tour.priceLists.filter(p => p.id == priceListId)[0]);
+            setPriceList(tour.priceLists.filter(p => p.id === priceListId)[0]);
         });
 
         CommentService.getCommentsByPriceListId(priceListId).then(res =>{
@@ -46,6 +41,12 @@ export default function DetailTourComponent(props) {
     function handleChangeComment(event){
         setComment(event.target.value);
         event.preventDefault();
+    }
+
+    function buy(){
+        TourSevice.buyATour(tour.id).then(res =>{
+            console.log("buy")
+        })
     }
 
     return (

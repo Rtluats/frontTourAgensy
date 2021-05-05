@@ -1,17 +1,15 @@
-import React from 'react'
+import {React, useState, useEffect} from 'react'
 import CountryService from '../../services/CountryService'
 import CityService from '../../services/CityService'
-import { Button } from 'bootstrap'
 
 
 export default function CreateUpdateCountryComponent(props) {
     const [name, setName] = useState('')
     const [cities, setCities] = useState([])
-    const [id, setId] = useState('')
+    const [id] = useState(props.match.params.id)
     const [allCities, setAllCities] = useState([])
 
     useEffect(() => {
-        setId(props.match.params.id)
         if (id !== '_add'){
             CountryService.getCountryById(id).then(res => {
                 let country = res.data
@@ -33,7 +31,7 @@ export default function CreateUpdateCountryComponent(props) {
             cities: cities
         }
 
-        if(id !== '_add'){
+        if(id === '_add'){
             CountryService.createCountry(country).then(res => {
                 props.history.push('/countries')
             })
@@ -57,27 +55,30 @@ export default function CreateUpdateCountryComponent(props) {
         }
     }
 
-    cancel = () => {
+    function cancel(){
         props.history.goBack()
     }
 
-    function addCity(c){
+    function addCity(e, c){
+        e.preventDefault();
         if(!cities.includes(c)){
-            cities.add(c);
+            setCities([...cities, c])
+            console.log(cities)
         }
     }
 
-    function deleteCity(c){
+    function deleteCity(e, c){
+        e.preventDefault();
         if(cities.includes(c)){
-            cities.remove(c);
+            setCities(cities.filter(city => city.id !== c.id))
         }
     }
 
     function getButton(c){
         if(cities.includes(c)){
-            return <Button className="btn btn-danger" onClick={() => deleteCity(c)}>Delete</Button>
+            return <button className="btn btn-danger" onClick={(e) => deleteCity(e, c)}>Delete</button>
         } else {
-            return <Button className="btn btn-success" onClick={() => addCity(c)}>Add</Button>
+            return <button className="btn btn-success" onClick={(e) => addCity(e, c)}>Add</button>
         }
     }
 
@@ -107,16 +108,16 @@ export default function CreateUpdateCountryComponent(props) {
                                         {
                                             allCities.map(
                                                 c=>
-                                                <tr>
+                                                <tr key={c.id}>
                                                     <td>{c.name}</td>
-                                                    <td>{cities.includes(c)}</td>
+                                                    <td>{cities.includes(c)?"Yes":"No"}</td>
                                                     <td>{getButton(c)}</td>
                                                 </tr>
                                             )
                                         }
                                     </tbody>
                                 </table>
-                                <div class="btn-group">
+                                <div className="btn-group">
                                     <button className="btn btn-success" onClick={saveOrUpdateCountry}>Save</button>
                                     <button className="btn btn-danger" onClick={cancel} style={{marginLeft: "10px"}}>Cancel</button>
                                 </div>

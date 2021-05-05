@@ -13,6 +13,10 @@ class TourService{
         return axios.post(TOUR_API_BASE_URL, tour, { headers: authHeader() });
     }
 
+    buyATour(id){
+        return axios.post(TOUR_API_BASE_URL + `/byuATour/${id}`, { headers: authHeader() });
+    }
+
     getTourById(id){
         return axios.get(TOUR_API_BASE_URL + "/" + id, { headers: authHeader() });
     }

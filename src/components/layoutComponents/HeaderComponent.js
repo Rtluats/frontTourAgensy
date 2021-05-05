@@ -49,7 +49,7 @@ export default class HeaderComponent extends Component {
             <div>
                 <header>
                     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                        <div class="container-fluid">
+                        <div className="container-fluid">
                             <div><label className="navbar-brand">Tour Agensy</label></div>
                             <form className="form-inline my-2 my-lg-0">
                                 <input className="form-control mr-sm-2" type="search" placeholder="tour" aria-label="Search"/>
@@ -69,13 +69,15 @@ export default class HeaderComponent extends Component {
                                 {showManagerBoard && (
                                     
                                     <li className="nav-item dropdown">
-                                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             Work
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li><a className="dropdown-item" href="/hotels">Hotel List</a></li>
-                                            <li><a className="dropdown-item" href="/priceLists">priceList List</a></li>
-                                            <li><a className="dropdown-item" href="/tours">Tour List</a></li>
+                                            <li><a className="dropdown-item" href="/cities">Cities</a></li>
+                                            <li><a className="dropdown-item" href="/countries">Countries</a></li>
+                                            <li><a className="dropdown-item" href="/hotels">Hotels</a></li>
+                                            <li><a className="dropdown-item" href="/priceLists">priceLists</a></li>
+                                            <li><a className="dropdown-item" href="/tours">Tours</a></li>
                                         </ul>
                                     </li>
                                     

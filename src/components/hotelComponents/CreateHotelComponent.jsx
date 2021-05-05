@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import HotelService from '../../services/HotelService';
-import CityService from '../../service/CityService';
+import CityService from '../../services/CityService';
 import { Button } from 'bootstrap';
 
 class CreateHotelComponent extends Component {
@@ -87,7 +87,7 @@ class CreateHotelComponent extends Component {
     }
 
     getButton(c){
-        if(cities.includes(c)){
+        if(this.state.cities.includes(c)){
             return <Button className="btn btn-success" onClick={() => this.addCity(c)}>Add</Button>
         } else {
             return  <Button className="btn btn-danger" onClick={() => this.deleteCity}>Delete</Button>

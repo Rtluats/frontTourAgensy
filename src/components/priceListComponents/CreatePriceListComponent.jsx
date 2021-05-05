@@ -107,15 +107,16 @@ class CreatePriceListComponent extends Component {
     }
 
     deleteHotel(){
-        this.state.hotel = null
+        this.setState({hotel: null})
+        
     }
 
     addHotel(h){
-        this.state.hotel = h 
+        this.setState({hotel: h})
     }
 
     getButton(h){
-        if(this.state.hotel ==  h){
+        if(this.state.hotel === h){
             return <Button className="btn btn-danger" onClick={() => this.deleteHotel(h)}>Delete from PriceList</Button>
 
         } else {

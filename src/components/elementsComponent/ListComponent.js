@@ -25,7 +25,7 @@ export default function ListComponent(props) {
                             <label>Country: {tour.priceLists[0].hotel.city.country.name}</label>
                             <label>City: {tour.priceLists[0].hotel.city.name}</label>
                             <p className="card-text">{tour.discription}</p>
-                            <a onClick={() => {props.history.push(`/tour-detail-view/${tour.id}`)}} className="card-link">Подробнее</a>
+                            <button onClick={() => {props.history.push(`/tour-detail-view/${tour.id}`)}} className="card-link">Подробнее</button>
                         </div>
                     </div>
                 )

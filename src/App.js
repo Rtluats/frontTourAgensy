@@ -7,11 +7,8 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import HeaderComponent from './components/layoutComponents/HeaderComponent';
 import FooterComponent from './components/layoutComponents/FooterComponent';
 import CreateHotelComponent from './components/hotelComponents/CreateHotelComponent';
-import ViewHotelComponent from './components/hotelComponents/ViewHotelComponent';
 import CreateTourComponent from './components/tourComponents/CreateTourComponent';
-import ViewTourComponent from './components/tourComponents/ViewTourComponent';
 import CreatePriceListComponent from './components/priceListComponents/CreatePriceListComponent';
-import ViewPriceListComponent from './components/priceListComponents/ViewPriceListComponent';
 
 import ListComponent from './components/elementsComponent/ListComponent';
 import Login from './components/elementsComponent/LoginComponent';
@@ -36,13 +33,10 @@ function App() {
               <Switch>
                 <Route path="/hotels" exact component={ListHotelsComponent}></Route>
                 <Route path="/hotel-add/:id" component={CreateHotelComponent}></Route>
-                <Route path="/hotel-view/:id" component={ViewHotelComponent}></Route>
                 <Route path="/tours" component={ListToursComponent}></Route>
                 <Route path="/tour-add/:id" component={CreateTourComponent}></Route>
-                <Route path="/tour-view/:id" component={ViewTourComponent}></Route>
                 <Route path="/priceLists" component={ListPriceListComponent}></Route>
                 <Route path="/priceList-add/:id" component={CreatePriceListComponent}></Route>
-                <Route path="/priceList-view/:id" component={ViewPriceListComponent}></Route>
                 <Route path="/tour-detail-view/:id" component={DetailTourPriceListsComponent}></Route>
                 <Route path="/tour-detail-view/:tourId&&:priceListId" component={DetailTourComponent}></Route>  
                 {/* возможно роутинг сверху неверен, я неуверен */}

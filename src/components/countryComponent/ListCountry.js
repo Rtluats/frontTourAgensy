@@ -1,4 +1,4 @@
-import React from 'react'
+import {React, useState, useEffect} from 'react'
 import CountryService from '../../services/CountryService'
 
 export default function ListCountry(props) {
@@ -20,14 +20,14 @@ export default function ListCountry(props) {
 
     function deleteCountry(e, id){
         CountryService.deleteCountry(id).then(res => {
-            setCountry(country.filter(c => c.id != id))
+            setCountry(country.filter(c => c.id !== id))
         })
     }
 
     return (
         <div>
             <h2 className="text-center">Country List</h2>
-            <button type="button" className="btn btn-primary " onClick={() => addCountry}>Add</button>
+            <button type="button" className="btn btn-primary " onClick={(e) => addCountry(e)}>Add</button>
             <p/>
             <div className="row">
                 <table className="table table-striped table-bordered">
