@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PriceListService from '../../services/PriceListService';
 import TourService from '../../services/TourSevice';
 
-
 class CreateTourComponent extends Component {
     
     constructor(props){
@@ -15,6 +14,8 @@ class CreateTourComponent extends Component {
             description: '',
             priceLists: [],
             allPriceLists: [],
+            file: '',
+            imagePreviewUrl: ''
         }
 
         this.saveOrUpdateTour = this.saveOrUpdateTour.bind(this);
@@ -104,7 +105,35 @@ class CreateTourComponent extends Component {
         }
     }
 
+    handleSubmit(e) {
+        e.preventDefault();
+      }
+    
+    handleImageChange(e) {
+        e.preventDefault();
+    
+        let reader = new FileReader();
+        let file = e.target.files[0];
+    
+        reader.onloadend = () => {
+          this.setState({
+            file: file,
+            imagePreviewUrl: reader.result
+          });
+        }
+    
+        reader.readAsDataURL(file)
+    }
+
     render() {
+        let {imagePreviewUrl} = this.state;
+        let $imagePreview = null;
+        if (imagePreviewUrl) {
+            $imagePreview = (<img src={imagePreviewUrl} />);
+        } else {
+            $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
+        }
+
         return (
             <div>
                 <div className="container">
@@ -122,6 +151,21 @@ class CreateTourComponent extends Component {
                                         <label>Description:</label>
                                         <input placeholder="Description" name="description" className="form-control"
                                             value={this.state.description} onChange={this.changeDescriptionHandler}/>
+                                    </div>
+                                    <div>
+                                        <label>Image:</label>
+                                        <div className="previewComponent">
+                                            <form onSubmit={(e)=>this._handleSubmit(e)}>
+                                            <input className="fileInput" type="file" 
+                                                onChange={(e)=>this.handleImageChange(e)} />
+                                            <button className="submitButton" 
+                                                type="submit" 
+                                                onClick={(e)=>this.handleSubmit(e)}>Upload Image</button>
+                                            </form>
+                                            <div className="imgPreview">
+                                                {$imagePreview}
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className="form-group">
                                         <label>PriceLists:</label>

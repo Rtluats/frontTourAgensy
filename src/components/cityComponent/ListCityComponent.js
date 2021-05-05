@@ -47,7 +47,7 @@ export default function ListCityComponent(props) {
                                         <td> {city.country.name} </td>
                                         <td>
                                             <div className="btn-group">
-                                                <button onClick = {editCity(() => city.id)} className="btn btn-info">Update</button>
+                                                <button onClick = {() => editCity(city.id)} className="btn btn-info">Update</button>
                                                 <button style={{marginLeft: "10px"}} onClick = {() => deleteCity(city.id)} className="btn btn-danger">Delete</button>
                                             </div>
                                         </td>

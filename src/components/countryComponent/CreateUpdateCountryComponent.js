@@ -62,19 +62,19 @@ export default function CreateUpdateCountryComponent(props) {
     }
 
     function addCity(c){
-        if(!cities.contains(c)){
+        if(!cities.includes(c)){
             cities.add(c);
         }
     }
 
     function deleteCity(c){
-        if(cities.contains(c)){
+        if(cities.includes(c)){
             cities.remove(c);
         }
     }
 
     function getButton(c){
-        if(cities.contains(c)){
+        if(cities.includes(c)){
             return <Button className="btn btn-danger" onClick={() => deleteCity(c)}>Delete</Button>
         } else {
             return <Button className="btn btn-success" onClick={() => addCity(c)}>Add</Button>
@@ -109,7 +109,7 @@ export default function CreateUpdateCountryComponent(props) {
                                                 c=>
                                                 <tr>
                                                     <td>{c.name}</td>
-                                                    <td>{cities.contains(c)}</td>
+                                                    <td>{cities.includes(c)}</td>
                                                     <td>{getButton(c)}</td>
                                                 </tr>
                                             )

@@ -87,7 +87,7 @@ class CreateHotelComponent extends Component {
     }
 
     getButton(c){
-        if(cities.contains(c)){
+        if(cities.includes(c)){
             return <Button className="btn btn-success" onClick={() => this.addCity(c)}>Add</Button>
         } else {
             return  <Button className="btn btn-danger" onClick={() => this.deleteCity}>Delete</Button>
@@ -123,7 +123,7 @@ class CreateHotelComponent extends Component {
                                                     <tr>
                                                         <td>{c.country.name}</td>
                                                         <td>{c.name}</td>
-                                                        <td>{this.state.cities.contains(this.state.city)}</td>
+                                                        <td>{this.state.cities.includes(this.state.city)}</td>
                                                         <td>
                                                             {this.getButton(c)}
                                                         </td>

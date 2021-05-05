@@ -34,7 +34,6 @@ class ListPriceListComponent extends Component {
         PriceListService.getPriceLists().then((res)=>
             {
                 this.setState({ priceLists: res.data });
-                console.log(res.data);
             }
         )
     }
@@ -70,9 +69,10 @@ class ListPriceListComponent extends Component {
                                         <td> {priceList.departureDate} </td>
                                         <td> {priceList.numberOfDays} </td>
                                         <td>
-                                            <button onClick = {() => this.editPriceList(priceList.id)} className="btn btn-info">Update</button>
-                                            <button style={{marginLeft: "10px"}} onClick = {() => this.deletePriceList(priceList.id)} className="btn btn-danger">Delete</button>
-                                            <button style={{marginLeft: "10px"}} onClick = {() => this.viewPriceList(priceList.id)} className="btn btn-info">View</button>
+                                            <div className="btn-group">
+                                                <button onClick = {() => this.editPriceList(priceList.id)} className="btn btn-info">Update</button>
+                                                <button style={{marginLeft: "10px"}} onClick = {() => this.deletePriceList(priceList.id)} className="btn btn-danger">Delete</button> 
+                                            </div>
                                         </td>
                                     </tr>
                                 )

@@ -107,16 +107,22 @@ class CreatePriceListComponent extends Component {
     }
 
     deleteHotel(){
-        if(this.state.hotel != null){
-            this.state.hotel = null
-        }
+        this.state.hotel = null
     }
 
     addHotel(h){
         this.state.hotel = h 
     }
 
-    
+    getButton(h){
+        if(this.state.hotel ==  h){
+            return <Button className="btn btn-danger" onClick={() => this.deleteHotel(h)}>Delete from PriceList</Button>
+
+        } else {
+            return <Button className="btn btn-success" onClick={() => this.addHotel(h)}>Add to PriceList</Button>
+
+        }
+    }    
 
     render() {
         return (
@@ -163,11 +169,7 @@ class CreatePriceListComponent extends Component {
                                                     <td>{h.name}</td>
                                                     <td>{h.city.name}</td>
                                                     <td>{h.country.name}</td>
-                                                    <td>
-                                                        <Button className="btn btn-success" onClick={() => this.addHotel(h)}>Add to PriceList</Button>
-                                                        <Button className="btn btn-danger" onClick={() => this.deleteHotel(h)}>Delete from PriceList</Button>
-                                                    </td>
-                                                    
+                                                    <td> {this.getButton(h)} </td>
                                                 </tr>
                                             )
                                         }
