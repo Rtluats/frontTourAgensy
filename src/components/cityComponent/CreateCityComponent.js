@@ -63,9 +63,10 @@ export default function CreateCityComponent(props) {
                                     <input placeholder="Name" name="name" className="form-control"
                                         value={name} onChange={changeNameHandler}/>
                                 </div>
-                                    
-                                <button className="btn btn-success" onClick={saveOrUpdateCity}>Save</button>
-                                <button className="btn btn-danger" onClick={cancel} style={{marginLeft: "10px"}}>Cancel</button>
+                                <div className="btn-group"> 
+                                    <button className="btn btn-success" onClick={saveOrUpdateCity}>Save</button>
+                                    <button className="btn btn-danger" onClick={cancel} style={{marginLeft: "10px"}}>Cancel</button>
+                                </div> 
                             </form>
                         </div>
                     </div>

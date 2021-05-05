@@ -102,6 +102,10 @@ class CreatePriceListComponent extends Component {
         }
     }
 
+    loadFile(){
+        
+    }
+
     deleteHotel(){
         if(this.state.hotel != null){
             this.state.hotel = null
@@ -111,6 +115,8 @@ class CreatePriceListComponent extends Component {
     addHotel(h){
         this.state.hotel = h 
     }
+
+    
 
     render() {
         return (

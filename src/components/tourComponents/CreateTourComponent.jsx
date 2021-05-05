@@ -96,6 +96,14 @@ class CreateTourComponent extends Component {
         }
     }
 
+    getButton(p){
+        if(this.state.priceLists.contains(p)){
+            return <Button className="btn-danger" onClick={() => this.deletePriceList(p)}>Delete from tour</Button>
+        } else {
+            return <Button className="btn-success" onClick={() => this.addPriceList(p)}>Add to tour</Button>
+        }
+    }
+
     render() {
         return (
             <div>
@@ -131,7 +139,7 @@ class CreateTourComponent extends Component {
                                             </thead>
                                             <tbody>
                                             {
-                                                this.state.priceLists.map(
+                                                this.state.allPriceLists.map(
                                                     p => 
                                                     <tr key={p.Id} >
                                                         <td>{p.hotel.name}</td>
@@ -140,8 +148,11 @@ class CreateTourComponent extends Component {
                                                         <td>{p.numberOfDays}</td>
                                                         <td>{p.price}</td>
                                                         <td>{p.description}</td>
-                                                        <Button className="btn-success" onClick={() => this.addPriceList(p)}>Add to tour</Button>
-                                                        <Button className="btn-danger" onClick={() => this.deletePriceList(p)}>Delete from tour</Button>
+                                                        <td>
+                                                            <div className="btn-group">
+                                                                {getButton(p)}
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 )
                                             }

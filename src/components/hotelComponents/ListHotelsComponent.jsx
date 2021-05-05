@@ -55,6 +55,8 @@ class ListHotelsComponent extends Component {
                         <thead>
                             <tr>
                                 <th>Hotel Name</th>
+                                <th>Country</th>
+                                <th>City</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -63,10 +65,15 @@ class ListHotelsComponent extends Component {
                                 this.state.hotels.map(
                                     hotel =>
                                     <tr key = {hotel.id}>
-                                        <td> {hotel.name} </td>
+                                        <td>{hotel.name} </td>
+                                        <td>{hotel.city.country.name}</td>
+                                        <td>{hotel.city.name}</td>
                                         <td>
-                                            <button onClick = {() => this.editHotel(hotel.id)} className="btn btn-info">Update</button>
-                                            <button style={{marginLeft: "10px"}} onClick = {() => this.deleteHotel(hotel.id)} className="btn btn-danger">Delete</button>                                        </td>
+                                            <div className="btn-group">
+                                                <button onClick = {() => this.editHotel(hotel.id)} className="btn btn-info">Update</button>
+                                                <button style={{marginLeft: "10px"}} onClick = {() => this.deleteHotel(hotel.id)} className="btn btn-danger">Delete</button>
+                                            </div>
+                                        </td>
                                     </tr>
                                 )
                             }

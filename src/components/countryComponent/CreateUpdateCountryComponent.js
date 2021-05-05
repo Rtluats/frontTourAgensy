@@ -67,9 +67,17 @@ export default function CreateUpdateCountryComponent(props) {
         }
     }
 
-    function deleteCity(){
+    function deleteCity(c){
         if(cities.contains(c)){
             cities.remove(c);
+        }
+    }
+
+    function getButton(c){
+        if(cities.contains(c)){
+            return <Button className="btn btn-danger" onClick={() => deleteCity(c)}>Delete</Button>
+        } else {
+            return <Button className="btn btn-success" onClick={() => addCity(c)}>Add</Button>
         }
     }
 
@@ -87,10 +95,11 @@ export default function CreateUpdateCountryComponent(props) {
                                         value={name} onChange={changeNameHandler}/>
                                 </div>
                                 <label>Cities List</label>
-                                <table>
+                                <table className="table table-striped table-bordered">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
+                                            <th>is Add</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -100,17 +109,17 @@ export default function CreateUpdateCountryComponent(props) {
                                                 c=>
                                                 <tr>
                                                     <td>{c.name}</td>
-                                                    <td>
-                                                        <Button className="btn btn-success" onClick={() => addCity(c)}>Add</Button>
-                                                        <Button className="btn btn-danger" onClick={() => deleteCity}>Delete</Button>
-                                                    </td>
+                                                    <td>{cities.contains(c)}</td>
+                                                    <td>{getButton(c)}</td>
                                                 </tr>
                                             )
                                         }
                                     </tbody>
                                 </table>
-                                <button className="btn btn-success" onClick={saveOrUpdateCountry}>Save</button>
-                                <button className="btn btn-danger" onClick={cancel} style={{marginLeft: "10px"}}>Cancel</button>
+                                <div class="btn-group">
+                                    <button className="btn btn-success" onClick={saveOrUpdateCountry}>Save</button>
+                                    <button className="btn btn-danger" onClick={cancel} style={{marginLeft: "10px"}}>Cancel</button>
+                                </div>
                             </form>
                         </div>
                     </div>

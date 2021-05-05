@@ -86,6 +86,14 @@ class CreateHotelComponent extends Component {
         })
     }
 
+    getButton(c){
+        if(cities.contains(c)){
+            return <Button className="btn btn-success" onClick={() => this.addCity(c)}>Add</Button>
+        } else {
+            return  <Button className="btn btn-danger" onClick={() => this.deleteCity}>Delete</Button>
+        }
+    }
+
     render() {
         return (
             <div>
@@ -100,13 +108,12 @@ class CreateHotelComponent extends Component {
                                         <input placeholder="Name" name="name" className="form-control"
                                             value={this.state.name} onChange={this.changeNameHandler}/>
                                     </div>
-
                                     <label>Cities List</label>
-
-                                    <table>
+                                    <table className="table table-striped table-bordered">
                                         <thead>
                                             <th>Country</th>
                                             <th>City</th>
+                                            <th>Is add</th>
                                             <th>Actions</th>
                                         </thead>
                                         <tbody>
@@ -116,18 +123,19 @@ class CreateHotelComponent extends Component {
                                                     <tr>
                                                         <td>{c.country.name}</td>
                                                         <td>{c.name}</td>
+                                                        <td>{this.state.cities.contains(this.state.city)}</td>
                                                         <td>
-                                                            <Button className="btn btn-success" onClick={() => this.addCity(c)}>Add</Button>
-                                                            <Button className="btn btn-danger" onClick={() => this.deleteCity}>Delete</Button>
+                                                            {this.getButton(c)}
                                                         </td>
                                                     </tr>
                                                 )
                                             }
                                         </tbody>
                                     </table>
-
-                                    <button className="btn btn-success" onClick={this.saveOrUpdateHotel}>Save</button>
-                                    <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Cancel</button>
+                                    <div className="btn-group">
+                                        <button className="btn btn-success" onClick={this.saveOrUpdateHotel}>Save</button>
+                                        <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Cancel</button>
+                                    </div> 
                                 </form>
                             </div>
                         </div>
