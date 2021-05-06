@@ -19,6 +19,7 @@ export default function ListCountry(props) {
     }
 
     function deleteCountry(e, id){
+        e.preventDefault();
         CountryService.deleteCountry(id).then(res => {
             setCountry(country.filter(c => c.id !== id))
         })
@@ -44,8 +45,8 @@ export default function ListCountry(props) {
                                 <tr key = {c.id}>
                                     <td> {c.name} </td>
                                     <td>
-                                        <button onClick = {() => editCountry(c.id)} className="btn btn-info">Update</button>
-                                        <button style={{marginLeft: "10px"}} onClick = {() => deleteCountry(c.id)} className="btn btn-danger">Delete</button>
+                                        <button onClick = {(e) => editCountry(e, c.id)} className="btn btn-info">Update</button>
+                                        <button style={{marginLeft: "10px"}} onClick = {(e) => deleteCountry(e, c.id)} className="btn btn-danger">Delete</button>
                                     </td>
                                 </tr>
                             )

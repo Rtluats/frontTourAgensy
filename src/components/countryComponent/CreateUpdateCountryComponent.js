@@ -1,84 +1,85 @@
-import {React, useState, useEffect} from 'react'
-import CountryService from '../../services/CountryService'
-import CityService from '../../services/CityService'
+import {React, useState, useEffect} from 'react';
+import CountryService from '../../services/CountryService';
+import CityService from '../../services/CityService';
 
 
 export default function CreateUpdateCountryComponent(props) {
-    const [name, setName] = useState('')
-    const [cities, setCities] = useState([])
-    const [id] = useState(props.match.params.id)
-    const [allCities, setAllCities] = useState([])
+    const [name, setName] = useState('');
+    const [cities, setCities] = useState([]);
+    const [allCities, setAllCities] = useState([]);
 
     useEffect(() => {
-        if (id !== '_add'){
-            CountryService.getCountryById(id).then(res => {
-                let country = res.data
-                setName(country.name)
-                setCities(country.cities)
+        if (props.match.params.id !== '_add'){
+            CountryService.getCountryById(props.match.params.id).then(res => {
+                let country = res.data;
+                console.log(country)
+                setName(country.name);
+                setCities(country.cities);
             })
         }   
 
         CityService.getCities().then(res => {
-            setAllCities(res.data)
+            setAllCities(res.data);
         })
-    })
+    }, [props.match.params.id])
 
     function saveOrUpdateCountry(c){
-        c.preventDefault()
+        c.preventDefault();
 
         let country = {
             name: name,
             cities: cities
         }
 
-        if(id === '_add'){
+        console.log(country)
+
+        if(props.match.params.id === '_add'){
             CountryService.createCountry(country).then(res => {
-                props.history.push('/countries')
+                props.history.push('/countries');
             })
         } else {
-            CountryService.updateCountry(country, id).then(res => {
-                props.history.push('/countries')
+            CountryService.updateCountry(country, props.match.params.id).then(res => {
+                props.history.push('/countries');
             })
         }
     }
 
     function changeNameHandler(e){
-        e.preventDefault()
-        setName(e.target.value)
+        e.preventDefault();
+        setName(e.target.value);
     }
 
     function getTitle(){
-        if(id !== '_add'){
-            return <h3 className='text-center'> Update Country </h3> 
+        if(props.match.params.id !== '_add'){
+            return <h3 className='text-center'> Update Country </h3>;
         } else {
-            return <h3 className='text-center'> Add Country </h3>
+            return <h3 className='text-center'> Add Country </h3>;
         }
     }
 
     function cancel(){
-        props.history.goBack()
+        props.history.goBack();
     }
 
     function addCity(e, c){
         e.preventDefault();
-        if(!cities.includes(c)){
-            setCities([...cities, c])
-            console.log(cities)
+        if(!cities.some((cit) => cit.id === c.id)){
+            setCities([...cities, c]);
         }
     }
 
     function deleteCity(e, c){
         e.preventDefault();
-        if(cities.includes(c)){
-            setCities(cities.filter(city => city.id !== c.id))
+        if(cities.some((cit) => cit.id === c.id)){
+            setCities(cities.filter(city => city.id !== c.id));
         }
     }
 
     function getButton(c){
-        if(cities.includes(c)){
-            return <button className="btn btn-danger" onClick={(e) => deleteCity(e, c)}>Delete</button>
+        if(cities.some((cit) => cit.id === c.id)){
+            return <button className="btn btn-danger" onClick={(e) => deleteCity(e, c)}>Delete</button>;
         } else {
-            return <button className="btn btn-success" onClick={(e) => addCity(e, c)}>Add</button>
+            return <button className="btn btn-success" onClick={(e) => addCity(e, c)}>Add</button>;
         }
     }
 
@@ -100,6 +101,7 @@ export default function CreateUpdateCountryComponent(props) {
                                     <thead>
                                         <tr>
                                             <th>Name</th>
+                                            <th>Related country</th>
                                             <th>is Add</th>
                                             <th>Actions</th>
                                         </tr>
@@ -110,7 +112,8 @@ export default function CreateUpdateCountryComponent(props) {
                                                 c=>
                                                 <tr key={c.id}>
                                                     <td>{c.name}</td>
-                                                    <td>{cities.includes(c)?"Yes":"No"}</td>
+                                                    <td>{c.country == null? "Hasn't rel country": c.country.name}</td>
+                                                    <td>{cities.some((cit) => cit.id === c.id)?"Yes":"No"}</td>
                                                     <td>{getButton(c)}</td>
                                                 </tr>
                                             )

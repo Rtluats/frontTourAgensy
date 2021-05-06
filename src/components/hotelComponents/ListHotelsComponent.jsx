@@ -14,13 +14,16 @@ class ListHotelsComponent extends Component {
         this.editHotel = this.editHotel.bind(this);
         this.deleteHotel = this.deleteHotel.bind(this);
         this.viewHotel = this.viewHotel.bind(this);
+        this.getCityName = this.getCityName.bind(this);
+        this.getCountryName = this.getCountryName.bind(this);
     }
 
     viewHotel(id){
         this.props.history.push(`/hotel-view/${id}`)
     }
 
-    deleteHotel(id){
+    deleteHotel(e, id){
+        e.preventDefault();
         HotelService.deleteHotel(id).then( res => {
             this.setState({hotel: this.state.hotels.filter(h => h.id !== id)})
         });
@@ -42,7 +45,21 @@ class ListHotelsComponent extends Component {
         this.props.history.push('/hotel-add/_add')
     }
 
-    
+    getCountryName(h){
+        if(h.city == null || h.city.country == null){
+            return "Hasn't rel country"
+        } else {
+            return h.city.country.name;
+        }
+    }
+
+    getCityName(h){
+        if (h.city == null){
+            return "Hasn't rel city"
+        } else {
+            return h.city.name;
+        }
+    }
 
     render() {
         return (
@@ -66,12 +83,12 @@ class ListHotelsComponent extends Component {
                                     hotel =>
                                     <tr key = {hotel.id}>
                                         <td>{hotel.name} </td>
-                                        <td>{hotel.city.country.name}</td>
-                                        <td>{hotel.city.name}</td>
+                                        <td>{this.getCountryName(hotel)}</td>
+                                        <td>{this.getCityName(hotel)}</td>
                                         <td>
                                             <div className="btn-group">
                                                 <button onClick = {() => this.editHotel(hotel.id)} className="btn btn-info">Update</button>
-                                                <button style={{marginLeft: "10px"}} onClick = {() => this.deleteHotel(hotel.id)} className="btn btn-danger">Delete</button>
+                                                <button style={{marginLeft: "10px"}} onClick = {(e) => this.deleteHotel(e, hotel.id)} className="btn btn-danger">Delete</button>
                                             </div>
                                         </td>
                                     </tr>

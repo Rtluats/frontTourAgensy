@@ -17,7 +17,7 @@ class CreatePriceListComponent extends Component {
             departureDate: null,
             numberOfDays: 0,
             hotel: {},
-            allHotels:[],
+            hotels:[],
             tour: {},
         }
 

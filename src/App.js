@@ -6,7 +6,6 @@ import ListPriceListComponent from './components/priceListComponents/ListPriceLi
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import HeaderComponent from './components/layoutComponents/HeaderComponent';
 import FooterComponent from './components/layoutComponents/FooterComponent';
-import CreateHotelComponent from './components/hotelComponents/CreateHotelComponent';
 import CreateTourComponent from './components/tourComponents/CreateTourComponent';
 import CreatePriceListComponent from './components/priceListComponents/CreatePriceListComponent';
 
@@ -21,6 +20,7 @@ import CreateCityComponent from './components/cityComponent/CreateCityComponent'
 import ListCountry from './components/countryComponent/ListCountry';
 import CreateUpdateCountryComponent from './components/countryComponent/CreateUpdateCountryComponent';
 import DetailTourComponent from './components/tourComponents/DetailTourComponent';
+import CreateHotelComponent from './components/hotelComponents/CreateHotelComponent';
 
 
 function App() {

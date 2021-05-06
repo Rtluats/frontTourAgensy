@@ -26,4 +26,4 @@ class CountryService{
     }
 }
 
-export default new CountryService()
+export default new CountryService();

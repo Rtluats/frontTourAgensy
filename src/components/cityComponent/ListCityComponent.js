@@ -2,26 +2,27 @@ import {React, useState, useEffect} from 'react'
 import CityService from '../../services/CityService'
 
 export default function ListCityComponent(props) {
-    const [cities, setCities] = useState([])
+    const [cities, setCities] = useState([]);
 
     useEffect(() => {
         CityService.getCities().then(res => {
-            setCities(res.data)
-        })
-    })
+            setCities(res.data);
+        });
+    });
 
     function deleteCity(e, id) {
+        e.preventDefault();
         CityService.deleteCity(id).then(res => {
-            setCities(cities.filter(c => c.id !== id))
-        })
+            setCities(cities.filter(c => c.id !== id));
+        });
     }
     
     function editCity(e, id) {
-        props.history.push(`/cities-add/${id}`)
+        props.history.push(`/cities-add/${id}`);
     }
 
     function addCity(e){
-        props.history.push(`/cities-add/_add`)
+        props.history.push(`/cities-add/_add`);
     }
 
     return (
@@ -44,11 +45,11 @@ export default function ListCityComponent(props) {
                                     city =>
                                     <tr key = {city.id}>
                                         <td> {city.name} </td>
-                                        <td> {city.country == null ? "Not" :city.country.name} </td>
+                                        <td> {city.country == null ? "Hasn't rel country" :city.country.name} </td>
                                         <td>
                                             <div className="btn-group">
-                                                <button onClick = {() => editCity(city.id)} className="btn btn-info">Update</button>
-                                                <button style={{marginLeft: "10px"}} onClick = {() => deleteCity(city.id)} className="btn btn-danger">Delete</button>
+                                                <button onClick = {(e) => editCity(e, city.id)} className="btn btn-info">Update</button>
+                                                <button style={{marginLeft: "10px"}} onClick = {(e) => deleteCity(e, city.id)} className="btn btn-danger">Delete</button>
                                             </div>
                                         </td>
                                     </tr>
