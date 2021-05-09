@@ -1,6 +1,7 @@
   import React, { Component } from "react";
   import { Redirect } from "react-router-dom";
   import AuthService from "../../services/auth.service";
+import userService from "../../services/user.service";
 
   export default class Profile extends Component {
     constructor(props) {
@@ -9,7 +10,8 @@
       this.state = {
         redirect: null,
         userReady: false,
-        currentUser: { username: "" }
+        currentUser: { username: "" },
+        userInfo: {},
       };
     }
 
@@ -17,6 +19,9 @@
       const currentUser = AuthService.getCurrentUser();
       if (!currentUser) this.setState({ redirect: "/" });
       this.setState({ currentUser: currentUser, userReady: true })
+      userService.getUserInfo(currentUser.username).then(res =>{
+        this.setState({userInfo: res.data})
+      })
     }
 
     render() {
@@ -36,13 +41,16 @@
             </h3>
           </header>
           <p>
-            <strong>Token:</strong>{" "}
-            {currentUser.accessToken.substring(0, 20)} ...{" "}
-            {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
+            <strong>First name:</strong>{" "}
+            {userInfo!=null?userInfo.firstName:"John"}
           </p>
           <p>
-            <strong>Id:</strong>{" "}
-            {currentUser.id}
+            <strong>Last name:</strong>{" "}
+            {userInfo!=null?userInfo.lastName:"Doe"}
+          </p>
+          <p>
+            <strong>Phone:</strong>{" "}
+            {userInfo!=null?userInfo.phone:"00000000000"}
           </p>
           <p>
             <strong>Email:</strong>{" "}

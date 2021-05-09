@@ -60,7 +60,7 @@ export default class HeaderComponent extends Component {
                                     
                                     <li className="nav-item">
                                         <Link to={"/"} className="nav-link">
-                                        Home
+                                        Home 
                                         </Link>
                                     </li>
                                     

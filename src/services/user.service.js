@@ -15,6 +15,10 @@ class UserService {
   getManagerBoard() {
     return axios.get(API_URL + 'man', { headers: authHeader() });
   }
+
+  getUserInfo(username){
+    return axios.get(API_URL + `userInfo/${username}`, { headers: authHeader() });
+  }
 }
 
 export default new UserService();

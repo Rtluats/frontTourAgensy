@@ -36,6 +36,36 @@ const vusername = value => {
   }
 };
 
+const vfirstName = value => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The first name must be between 3 and 20 characters.
+      </div>
+    );
+  }
+};
+
+const vlastName = value => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The last name must be between 3 and 20 characters.
+      </div>
+    );
+  }
+};
+
+const vphone = value => {
+  if (!value.match(/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/)) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The phone is incorrect!
+      </div>
+    );
+  }
+};
+
 const vpassword = value => {
   if (value.length < 6 || value.length > 40) {
     return (
@@ -53,14 +83,38 @@ export default class Register extends Component {
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
+    this.onChangeFirstName = this.onChangeFirstName.bind(this);
+    this.onChangeLastName = this.onChangeLastName.bind(this);
+    this.onChangePhone = this.onChangePhone.bind(this);
 
     this.state = {
       username: "",
+      firstName: "",
+      lastName: "",
+      phone: "",
       email: "",
       password: "",
       successful: false,
       message: ""
     };
+  }
+
+  onChangeFirstName(e) {
+    this.setState({
+      firstName: e.target.value
+    });
+  }
+
+  onChangeLastName(e) {
+    this.setState({
+      lastName: e.target.value
+    });
+  }
+
+  onChangePhone(e) {
+    this.setState({
+      phone: e.target.value
+    });
   }
 
   onChangeUsername(e) {
@@ -95,7 +149,10 @@ export default class Register extends Component {
       AuthService.register(
         this.state.username,
         this.state.email,
-        this.state.password
+        this.state.password,
+        this.state.firstName,
+        this.state.lastName,
+        this.state.phone,
       ).then(
         response => {
           this.setState({
@@ -148,6 +205,42 @@ export default class Register extends Component {
                     value={this.state.username}
                     onChange={this.onChangeUsername}
                     validations={[required, vusername]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="firstName">First name</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="firstName"
+                    value={this.state.username}
+                    onChange={this.onChangeUsername}
+                    validations={[required, vfirstName]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="lastName">Last name</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="lastName"
+                    value={this.state.username}
+                    onChange={this.onChangeUsername}
+                    validations={[required, vlastName]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="phone">Phone</label>
+                  <Input
+                    type="number"
+                    className="form-control"
+                    name="phone"
+                    value={this.state.username}
+                    onChange={this.onChangeUsername}
+                    validations={[required, vphone]}
                   />
                 </div>
 
