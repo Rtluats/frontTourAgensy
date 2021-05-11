@@ -18,7 +18,7 @@ class PriceListService{
     }
 
     buyATour(id){
-        return axios.post(PRICE_LIST_API_BASE_URL + `/buyATour/${id}`, { headers: authHeader() });
+        return axios.get(PRICE_LIST_API_BASE_URL + `/buyATour/${id}`, { headers: authHeader() });
     }
 
     getPriceListByCityName(name){

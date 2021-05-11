@@ -139,7 +139,11 @@ export default function DetailTourComponent(props) {
                                 <div className="row">
                                     <label><strong>Discount:</strong>{priceList.discount}</label>
                                 </div>
-                                <button className="btn btn-success" onClick={(e)=> buy(e)} >Buy</button>    
+                                {
+                                    isUser&&(
+                                        <button className="btn btn-success" onClick={(e)=> buy(e)} >Buy</button>    
+                                    )
+                                }
                             </div>
                         </div>
                         {
