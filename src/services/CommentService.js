@@ -9,8 +9,8 @@ class CommentService{
         return axios.get(COMMENT_API_BASE_URL, { headers: authHeader() });
     }
 
-    createComments(hotel){
-        return axios.post(COMMENT_API_BASE_URL, hotel, { headers: authHeader() });
+    createComments(id,comment){
+        return axios.post(COMMENT_API_BASE_URL + `/commentToPriceList/${id}`, comment, { headers: authHeader() });
     }
 
     getCommentById(id){
@@ -18,7 +18,7 @@ class CommentService{
     }
 
     getCommentsByPriceListId(id){
-        return axios.get(COMMENT_API_BASE_URL + "/by-price-list-id" + id, { headers: authHeader() });
+        return axios.get(COMMENT_API_BASE_URL + "/byPriceListId/" + id, { headers: authHeader() });
     }
 
     updateComment(hotel, id){

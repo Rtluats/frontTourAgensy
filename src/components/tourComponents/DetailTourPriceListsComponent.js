@@ -1,25 +1,25 @@
-import { Button } from 'bootstrap';
 import React, { useState, useEffect } from 'react';
 import TourService from '../../services/TourSevice';
 
-// класс для просмотра конкретного тура + отелей!!!!!(много) + дней отдыха
-// тут очень интересно как бы можно было сдеать вывод прайс-листов горизонтально
-// или типо как матрица
-//  *|*|*
-//  *|*|*
-//  *|*|*
-// что-то типо такого
+
 export default function DetailTourPriceListsComponent(props) {
-    const [tour, setTour] = useState([]);
+    const [tour, setTour] = useState({});
+    const [priceLists, setPriceLists] = useState([]);
+    const [country, setCountry] = useState({});
+    const [city, setCity] = useState({});
 
     useEffect(() => {
-        TourService.getById(props.match.params.id).then(res => {
+        TourService.getTourById(props.match.params.id).then(res => {
+            console.log(res.data)
             setTour(res.data);
+            setPriceLists(res.data.priceLists);
+            setCity(res.data.priceLists[0].hotel.city);
+            setCountry(res.data.priceLists[0].hotel.city.country);
         });
-    })
+    },[props.match.params.id])
 
     function getDetailTourComponent(id){
-        props.history.push(`/tour-detail-view/${tour.id}&&${id}}`) // 
+        props.history.push(`/tour-buy-view/${tour.id}&&${id}`)
     }
 
     return (
@@ -28,53 +28,54 @@ export default function DetailTourPriceListsComponent(props) {
                 <h3 className="text-center">Tour</h3>
                 <div className="card-body">
                     <div className="row">
-                        <label>Title:</label>
-                        <div> { tour.title } </div>
+                        <label><strong>Title: </strong>{tour.title}</label>
+                        
                     </div>
                     <div className="row">
-                        <label>Description:</label>
-                        <div> { tour.description } </div>
+                        <label><strong>Country: </strong>{country.name}</label>
+                        
                     </div>
-                    {
-                        tour.priceLists.map(
-                            priceList => 
-                            <div key={priceList.id} className="card">
-                                <div class="card-body">
-                                    <div className="card-body">
-                                        <div className="row">
-                                            <label>Hotel:</label>
-                                            <div> { priceList.hotel.name } </div>
+                    <div className="row">
+                        <label><strong>City:</strong>{city.name }</label>
+                        
+                    </div>
+                    <div className="row">
+                        <label><strong>Description:</strong></label>
+                        <div> {tour.description } </div>
+                    </div>
+                </div>
+            </div>
+            <div className="album py-5 bg-light">
+                <div className="container">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                        {
+                            priceLists.map(
+                                priceList => 
+                                <div key={priceList.id}>
+                                    <div className="col">
+                                        <div className="card shadow-sm">
+                                            <label><strong> Hotel: </strong>{priceList.hotel.name}</label>
+                                            <div class="card-body">
+                                                <p class="card-text">
+                                                    <label><strong>Price:</strong> {priceList.price}</label>
+                                                    <br/>
+                                                    <label><strong>Discount:</strong> {priceList.discount}</label>
+                                                    <br/>
+                                                    <label><strong>Number of days:</strong> {priceList.numberOfDays}</label>
+                                                    <label><strong>Date departure:</strong> {priceList.departureDate}</label>
+                                                </p>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <button className="btn btn-success" onClick={()=> getDetailTourComponent(priceList.id)} >Buy</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="row">
-                                            <label>Country:</label>
-                                            <div> { priceList.hotel.city.country.name} </div>
-                                        </div>
-                                        <div className="row">
-                                            <label>City:</label>
-                                            <div> { priceList.hotel.city.name} </div>
-                                        </div>
-                                        <div className="row">
-                                            <label>Number of days:</label>
-                                            <div> { priceList.numberOfDays } </div>
-                                        </div>
-                                        <div className="row">
-                                            <label>Price:</label>
-                                            <div> { priceList.price } </div>
-                                        </div>
-                                        <div className="row">
-                                            <label>Discount:</label>
-                                            <div> { priceList.discount } </div>
-                                        </div>
-                                        <div className="row">
-                                            <label>Departure date:</label>
-                                            <div> { priceList.departureDate } </div>
-                                        </div>
-                                       <Button className="btn btn-success" onClick={()=> getDetailTourComponent(priceList.id)} >Buy</Button>
                                     </div>
                                 </div>
-                            </div>
-                        )
-                    }
+                            )
+                        }     
+                    </div>
                 </div>
             </div>
         </div>

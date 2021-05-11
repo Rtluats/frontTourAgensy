@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TourService from '../../services/TourSevice'
 
 export default function ListComponent(props) {
-    const [tours, setTours] = useState({});
+    const [tours, setTours] = useState([]);
 
 
     useEffect(() => {
@@ -11,7 +11,7 @@ export default function ListComponent(props) {
                 setTours(res.data);
             }
         )
-    })
+    },[props.match.params.title])
     
     return (
         <div>
@@ -20,12 +20,12 @@ export default function ListComponent(props) {
                 tours.map(
                     tour =>
                     <div key={tour.id} className="card">
-                        <h5 className="card-title">{tour.title}</h5>
+                        <h5 className="card-title">Title:{tour.title}</h5>
                         <div className="card-body">
-                            <label>Country: {tour.priceLists[0].hotel.city.country.name}</label>
-                            <label>City: {tour.priceLists[0].hotel.city.name}</label>
-                            <p className="card-text">{tour.discription}</p>
-                            <button onClick={() => {props.history.push(`/tour-detail-view/${tour.id}`)}} className="card-link">Подробнее</button>
+                            <p>Country: {tour.priceLists[0].hotel.city.country.name}</p>
+                            <p>City: {tour.priceLists[0].hotel.city.name}</p>
+                            <p className="card-text">Description:{tour.description}</p>
+                            <button className="card-link btn-primary" onClick={() => {props.history.push(`/tour-detail-view/${tour.id}`)}} >Подробнее</button>
                         </div>
                     </div>
                 )

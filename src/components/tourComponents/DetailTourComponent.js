@@ -1,39 +1,59 @@
-import { Button } from 'bootstrap';
-import {React, useState, useEffect} from 'react'
-import authService from '../../services/auth.service'
+import {React, useState, useEffect} from 'react';
+import authService from '../../services/auth.service';
 import CommentService from '../../services/CommentService';
+import PriceListService from '../../services/PriceListService';
 import TourSevice from '../../services/TourSevice';
+import userService from '../../services/user.service';
 
-// класс для просмотра конкретного тура + отеля + дней отдыха
+
 export default function DetailTourComponent(props) {
     const [tour, setTour] = useState({});
     const [isUser] = useState(authService.getCurrentUser() == null ? false : true);
-    const [priceList, setPriceList] = useState({})
-    const [comments, setComments] = useState([])
-    const [comment, setComment] = useState('')
+    const [priceList, setPriceList] = useState({});
+    const [hotel, setHotel] = useState({});
+    const [city, setCity] = useState({});
+    const [country, setCountry] = useState({});
+    const [comments, setComments] = useState([]);
+    const [comment, setComment] = useState('');
+    const [groups, setGroups] = useState([]);
 
     useEffect(() => {
         const tourId = props.match.params.tourId;
-        const priceListId =  props.match.params.priceListId;
-
+        const priceListId = props.match.params.priceListId;
         TourSevice.getTourById(tourId).then(res =>{
-            setTour(res.data);
-            setPriceList(tour.priceLists.filter(p => p.id === priceListId)[0]);
+            const data = res.data;
+            setTour(data);
+            if(data.priceLists.length===1){
+                setPriceList(data.priceLists[0]);
+                setHotel(data.priceLists[0].hotel);
+                setCountry(data.priceLists[0].hotel.city.country);
+                setCity(data.priceLists[0].hotel.city);
+            } else{
+                setPriceList(data.priceLists.filter(p => p.id === priceListId)[0]);
+                setHotel(data.priceLists.filter(p => p.id === priceListId)[0].hotel);
+                setCountry(data.priceLists.filter(p => p.id === priceListId)[0].hotel.city.country);
+                setCity(data.priceLists.filter(p => p.id === priceListId)[0].hotel.city);
+            }
+            
         });
+       
 
         CommentService.getCommentsByPriceListId(priceListId).then(res =>{
             setComments(res.data);
-        })
-    })
+        });
+        
+        userService.getGroupsByPriceListId(priceListId).then(res =>{
+            setGroups(res.data);
+        });
+
+    },[props.match.params.tourId, props.match.params.priceListId])
 
     function addComment(event){
         let saveComment = {
             message: comment,
-            priceList: priceList,
-            user: authService.getCurrentUser(), // ?? точно так
-        }
+        }   
 
-        CommentService.addComment(saveComment).then(res =>{
+        CommentService.createComments(props.match.params.priceListId, saveComment).then(res =>{
             comments.push(saveComment)
         })
     }
@@ -43,85 +63,110 @@ export default function DetailTourComponent(props) {
         event.preventDefault();
     }
 
-    function buy(){
-        TourSevice.buyATour(tour.id).then(res =>{
-            console.log("buy")
+    function buy(e){
+        e.preventDefault();
+        PriceListService.buyATour(props.match.params.priceListId).then(res =>{
+            console.log(res.data);
         })
+    }
+
+    function formatDate(string){
+        let options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute:'numeric'};
+        return new Date(string).toLocaleDateString([],options);
     }
 
     return (
         <div>
-            <div className="card col-md-6 offset-md-3">
+            <div className="card col-md-12 ">
                 <h3 className="text-center">Tour</h3>
                 <div className="card-body">
                     <div className="row">
-                        <label>Title:</label>
-                        <div> { tour.title } </div>
+                        <label><strong>Title:</strong>{ tour.title }</label>
                     </div>
                     <div className="row">
-                        <label>Description:</label>
-                        <div> {tour.description } </div>
+                        <label><strong>Description:</strong>{tour.description }</label>
                     </div>
-                    <div class="container-fluid">
-                        <div class="row justify-content-md-center"> 
-                            <div class="col col-lg-4">
-                                {
-                                    isUser&&(
-                                        <div className="row">
-                                            <textarea value={comment} onChange={handleChangeComment}/>
-                                            <Button className="btn btn-success" onClick={addComment}>Отправить</Button>
-                                        </div>
-                                    )
-                                }
-                                <ul>
-                                    {   
-                                        comments.map(
-                                            c => 
-                                                <li>
-                                                    <div className="row">
-                                                        <lable>{c.user.userInfo.firstName} {c.user.userInfo.lastName} {c.dateTime}</lable>
-                                                        <div>{c.message}</div>
+                </div>
+                <div className="container-fluid">
+                    <div className="row justify-content-md-center"> 
+                        <div className="col col-lg-4">
+                            {
+                                isUser&&(
+                                    <div className="row">
+                                        <textarea value={comment} onChange={handleChangeComment}/>
+                                        <button className="btn btn-success" onClick={addComment}>Отправить</button>
+                                    </div>
+                                )
+                            }
+                            <ul>
+                                {   
+                                    comments.map(
+                                        c => 
+                                            <li key={c.id}>
+                                                <div className="row">
+                                                    <lable><strong>First name:</strong>{c.userInfo.firstName} <strong>Last name:</strong>{c.userInfo.lastName} <br/><strong>Date:</strong>{ formatDate(c.localDateTime)}</lable>
+                                                    <br/>
+                                                    <div>
+                                                        <label><strong>Text:</strong></label>
+                                                        {c.message}
                                                     </div>
-                                                </li>
-                                        )
-                                    
-                                    }
-                                </ul> 
-                            </div>
-                            <div class="col">
-                                <div className="card-body">
-                                    <div className="row">
-                                        <label>Hotel:</label>
-                                        <div> { priceList.hotel.name } </div>
-                                    </div>
-                                    <div className="row">
-                                        <label>Country:</label>
-                                        <div> { priceList.hotel.city.country.name} </div>
-                                    </div>
-                                    <div className="row">
-                                        <label>City:</label>
-                                        <div> { priceList.hotel.city.name} </div>
-                                    </div>
-                                    <div className="row">
-                                        <label>Number of days:</label>
-                                        <div> { priceList.numberOfDays } </div>
-                                    </div>
-                                    <div className="row">
-                                        <label>Departure date:</label>
-                                        <div> { priceList.departureDate } </div>
-                                    </div>
-                                    <div className="row">
-                                        <label>Price:</label>
-                                        <div> { priceList.price } </div>
-                                    </div>
-                                    <div className="row">
-                                        <label>Discount:</label>
-                                        <div> { priceList.discount } </div>
-                                    </div>
-                                    <Button className="btn btn-success" onClick={()=> buy} >Buy</Button>    
-                                </div>
-                            </div>        
+                                                </div>
+                                            </li>
+                                        )                
+                                }
+                            </ul> 
                         </div>
+                        <div className="col">
+                            <div className="card-body">
+                                <div className="row">
+                                    <label><strong>Hotel:</strong>{hotel.name}</label>
+                                </div>
+                                <div className="row">
+                                    <label><strong>Country:</strong>{country.name}</label>
+                                </div>
+                                <div className="row">
+                                    <label><strong>City:</strong>{city.name}</label>
+                                </div>
+                                <div className="row">
+                                    <label><strong>Number of days:</strong>{priceList.numberOfDays}</label>
+                                </div>
+                                <div className="row">
+                                    <label><strong>Departure date:</strong>{priceList.departureDate}</label>
+                                </div>
+                                <div className="row">
+                                    <label><strong>Price:</strong>{priceList.price}</label>
+                                </div>
+                                <div className="row">
+                                    <label><strong>Discount:</strong>{priceList.discount}</label>
+                                </div>
+                                <button className="btn btn-success" onClick={(e)=> buy(e)} >Buy</button>    
+                            </div>
+                        </div>
+                        {
+                            isUser&&groups.length>0&&(
+                                <div className="col">
+                                    <label>My groups</label>
+                                    {
+                                        groups.map(
+                                            item => 
+                                            <ul key={item.id}>
+                                                {
+                                                    item.userInfoList.map(
+                                                        userInfo=>
+                                                        <li key={userInfo.id}>
+                                                            <div className="row">
+                                                                <lable><strong>First name:</strong>{userInfo.firstName} <strong>Last name:</strong>{userInfo.lastName}</lable>
+                                                                <br/>
+                                                            </div>
+                                                        </li>
+                                                    )
+                                                }
+                                            </ul>
+                                        )
+                                    }
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             </div>

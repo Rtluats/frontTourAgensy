@@ -13,16 +13,12 @@ class TourService{
         return axios.post(TOUR_API_BASE_URL, tour, { headers: authHeader() });
     }
 
-    buyATour(id){
-        return axios.post(TOUR_API_BASE_URL + `/byuATour/${id}`, { headers: authHeader() });
-    }
-
     getTourById(id){
         return axios.get(TOUR_API_BASE_URL + "/" + id, { headers: authHeader() });
     }
 
     getToursByTitle(title){
-        return axios.get(TOUR_API_BASE_URL + "/" + title, { headers: authHeader() });
+        return axios.get(TOUR_API_BASE_URL + "/byTitle/" + title, { headers: authHeader() });
     }
 
     updateTour(tour, id){

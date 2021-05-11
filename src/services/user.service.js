@@ -19,6 +19,10 @@ class UserService {
   getUserInfo(username){
     return axios.get(API_URL + `userInfo/${username}`, { headers: authHeader() });
   }
+
+  getGroupsByPriceListId(id){
+    return axios.get(API_URL + `userInfo/getGroupsByPriceListId/${id}`, { headers: authHeader() });
+  }
 }
 
 export default new UserService();

@@ -214,8 +214,8 @@ export default class Register extends Component {
                     type="text"
                     className="form-control"
                     name="firstName"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
+                    value={this.state.firstName}
+                    onChange={this.onChangeFirstName}
                     validations={[required, vfirstName]}
                   />
                 </div>
@@ -226,8 +226,8 @@ export default class Register extends Component {
                     type="text"
                     className="form-control"
                     name="lastName"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
+                    value={this.state.lastName}
+                    onChange={this.onChangeLastName}
                     validations={[required, vlastName]}
                   />
                 </div>
@@ -238,8 +238,8 @@ export default class Register extends Component {
                     type="number"
                     className="form-control"
                     name="phone"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
+                    value={this.state.phone}
+                    onChange={this.onChangePhone}
                     validations={[required, vphone]}
                   />
                 </div>

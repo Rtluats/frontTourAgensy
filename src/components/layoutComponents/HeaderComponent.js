@@ -1,59 +1,44 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom";
 import AuthService from "../../services/auth.service";
+import { useHistory } from "react-router-dom";
 
-export default class HeaderComponent extends Component {
-
-    constructor(props){
-        super(props)
-
-        this.state = {
-            showManagerBoard: false,
-            currentUser: undefined,
-            title: '',
-        }
-
-        this.logOut = this.logOut.bind(this);
-    }
-
-    componentDidMount() {
+export default function HeaderComponent(props) {
+    let history = useHistory();
+    const [showManagerBoard, setShowManagerBoard] = useState(false);
+    const [currentUser, setCurrentUser] = useState(undefined);
+    const [title, setTitle] = useState('');   
+    
+    useEffect(() => {
         const user = AuthService.getCurrentUser();
-    
         if (user) {
-          this.setState({
-            currentUser: user,
-            showManagerBoard: user.roles.includes("ROLE_MANAGER"),
-          });
+            setCurrentUser(user);
+            setShowManagerBoard(user.roles.includes("ROLE_MANAGER"))
         }
-      }
-    
-    logOut() {
+    },[])
+
+    function logOut() {
         AuthService.logout();
     }
 
-    searchHandler(e){
-        this.setState({
-            title: e.target.value,
-        })
+    function searchHandler(e){
         e.preventDefault();
+        setTitle(e.target.value);
     }
 
-    findByTitle(){
-        this.props.history.push(`/search/${this.state.title}`)
+    function findByTitle(){
+        history.push(`/search/${title}`);
     }
 
-
-    render() {
-        const { currentUser, showManagerBoard} = this.state;
-        return (
-            <div>
+    return (
+        <div>
                 <header>
                     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                         <div className="container-fluid">
                             <div><label className="navbar-brand">Tour Agensy</label></div>
                             <form className="form-inline my-2 my-lg-0">
-                                <input className="form-control mr-sm-2" type="search" placeholder="tour" aria-label="Search"/>
-                                <button onClick={() => this.searchHandler} onChange={() => this.findByTitle} className="btn btn-outline-success my-2 my-sm-0" type="submit">Search by tour</button>
+                                <input className="form-control mr-sm-2" onChange={(e)=>searchHandler(e)} value={title} type="search" placeholder="tour" aria-label="Search"/>
+                                <button className="btn btn-outline-success my-2 my-sm-0" onClick={()=>findByTitle()}>Search by tour</button>
                             </form>
                             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             {currentUser && (
@@ -92,7 +77,7 @@ export default class HeaderComponent extends Component {
                                         </Link>
                                     </li>
                                     <li className="nav-item">
-                                        <a href="/login" className="nav-link" onClick={this.logOut}>
+                                        <a href="/login" className="nav-link" onClick={()=>logOut()}>
                                         Logout
                                         </a>
                                     </li>
@@ -116,6 +101,5 @@ export default class HeaderComponent extends Component {
                     </nav>
                 </header>
             </div>
-        )
-    }
+    )
 }

@@ -34,8 +34,10 @@ class ListPriceListComponent extends Component {
         PriceListService.getPriceLists().then((res)=>
             {
                 this.setState({ priceLists: res.data });
+                console.log(res.data)
             }
         )
+       
     }
 
     addPriceList(){
@@ -52,6 +54,9 @@ class ListPriceListComponent extends Component {
                     <table className="table table-striped table-bordered">
                         <thead>
                             <tr>
+                                <th>Hotel</th>
+                                <th>Country</th>
+                                <th>City</th>
                                 <th>Price</th>
                                 <th>Discount</th>
                                 <th>Departure date</th>
@@ -64,6 +69,9 @@ class ListPriceListComponent extends Component {
                                 this.state.priceLists.map(
                                     priceList =>
                                     <tr key = {priceList.id} >
+                                        <td> {priceList.hotel.name}</td>
+                                        <td> {priceList.hotel.city.country.name}</td>
+                                        <td> {priceList.hotel.city.name} </td>
                                         <td> {priceList.price} </td>
                                         <td> {priceList.discount} </td>
                                         <td> {priceList.departureDate} </td>

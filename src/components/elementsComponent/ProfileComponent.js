@@ -20,8 +20,9 @@ import userService from "../../services/user.service";
       if (!currentUser) this.setState({ redirect: "/" });
       this.setState({ currentUser: currentUser, userReady: true })
       userService.getUserInfo(currentUser.username).then(res =>{
-        this.setState({userInfo: res.data})
-      })
+        this.setState({userInfo: res.data});
+        console.log(res.data);
+      });
     }
 
     render() {
@@ -42,15 +43,15 @@ import userService from "../../services/user.service";
           </header>
           <p>
             <strong>First name:</strong>{" "}
-            {userInfo!=null?userInfo.firstName:"John"}
+            {this.state.userInfo!=null?this.state.userInfo.firstName:"John"}
           </p>
           <p>
             <strong>Last name:</strong>{" "}
-            {userInfo!=null?userInfo.lastName:"Doe"}
+            {this.state.userInfo!=null?this.state.userInfo.lastName:"Doe"}
           </p>
           <p>
             <strong>Phone:</strong>{" "}
-            {userInfo!=null?userInfo.phone:"00000000000"}
+            {this.state.userInfo!=null?this.state.userInfo.phone:"00000000000"}
           </p>
           <p>
             <strong>Email:</strong>{" "}

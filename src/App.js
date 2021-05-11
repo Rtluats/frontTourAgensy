@@ -27,7 +27,7 @@ function App() {
   return (
     <div>
       <Router>
-      <HeaderComponent/>
+        <HeaderComponent/>
           
             <div className="container">
               <Switch>
@@ -38,9 +38,8 @@ function App() {
                 <Route path="/priceLists" component={ListPriceListComponent}></Route>
                 <Route path="/priceList-add/:id" component={CreatePriceListComponent}></Route>
                 <Route path="/tour-detail-view/:id" component={DetailTourPriceListsComponent}></Route>
-                <Route path="/tour-detail-view/:tourId&&:priceListId" component={DetailTourComponent}></Route>  
+                <Route path="/tour-buy-view/:tourId&&:priceListId" component={DetailTourComponent}></Route>  
                 {/* возможно роутинг сверху неверен, я неуверен */}
-                <Route path="/tour-list-view" component={ListComponent}></Route>
                 <Route path="/cities" component={ListCityComponent}></Route>
                 <Route path="/cities-add/:id" component={CreateCityComponent}></Route>
                 <Route path="/countries" component={ListCountry}></Route>
